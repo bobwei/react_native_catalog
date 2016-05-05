@@ -8,24 +8,37 @@ import {
 
 
 export default class IndexPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      coordinates: []
+    };
+  }
+
+  onRegionChange(region) {
+    let { latitude, longitude } = region;
+    this.setState({
+      coordinates: [
+        ...this.state.coordinates,
+        { latitude, longitude }
+      ]
+    });
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <MapView
           style={{ flex: 1 }}
+          onRegionChange={this.onRegionChange.bind(this)}
           region={{
             latitude: 24.9837193,
             longitude: 121.5427091,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01
           }}
           overlays={[{
-            coordinates:[
-              {latitude: 24.9787661, longitude: 121.5536013},
-              {latitude: 24.9887661, longitude: 121.5536013},
-              {latitude: 24.9987661, longitude: 121.5536013},
-              {latitude: 25.0087661, longitude: 121.5536013}
-            ],
+            coordinates:this.state.coordinates,
             strokeColor: '#f007',
             lineWidth: 4
           }]}

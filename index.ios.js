@@ -4,8 +4,7 @@ import React from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  NavigatorIOS,
-  StatusBarIOS
+  NavigatorIOS
 } from 'react-native';
 import { Provider } from 'react-redux';
 
@@ -16,10 +15,6 @@ const store = configureStore();
 
 
 class ReactNativeCatalog extends React.Component {
-  componentDidMount() {
-    StatusBarIOS.setStyle('light-content');
-  }
-
   render() {
     return (
       <Provider store={store}>
