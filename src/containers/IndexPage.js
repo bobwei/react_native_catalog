@@ -39,8 +39,8 @@ export default class IndexPage extends React.Component {
           }}
           overlays={[{
             coordinates:this.state.coordinates,
-            strokeColor: '#f007',
-            lineWidth: 4
+            strokeColor: '#007AFF',
+            lineWidth: 9
           }]}
         />
       </View>
