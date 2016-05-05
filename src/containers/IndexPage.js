@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Text
 } from 'react-native';
+
+import { GEOLOCATION_OPTIONS } from '../data';
 import { styles } from '../styles/IndexPage';
 
 
@@ -28,6 +30,29 @@ export default class IndexPage extends React.Component {
     });
   }
 
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        let { coords: { latitude, longitude } } = position;
+        this.addCoordinateToOverlay({ latitude, longitude });
+      },
+      (error) => console.log(error),
+      GEOLOCATION_OPTIONS
+    );
+    this.watchID = navigator.geolocation.watchPosition(
+      (position) => {
+        let { coords: { latitude, longitude } } = position;
+        this.addCoordinateToOverlay({ latitude, longitude });
+      },
+      (error) => console.log(error),
+      GEOLOCATION_OPTIONS
+    );
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
+
   onToggleRecordingLocation() {
     this.setState({ isRecordingLocation: !this.state.isRecordingLocation });
   }
@@ -44,11 +69,14 @@ export default class IndexPage extends React.Component {
       <View style={{ flex: 1 }}>
         <MapView
           style={{ flex: 1 }}
-          onRegionChange={this.onRegionChange.bind(this)}
+          // onRegionChange={this.onRegionChange.bind(this)}
           showsUserLocation={true}
           region={{
-            latitude: 24.9837193,
-            longitude: 121.5427091,
+            ...{
+              latitude: 0,
+              longitude: 0,
+              ...this.state.coordinates[0]
+            },
             latitudeDelta: 0.01,
             longitudeDelta: 0.01
           }}
