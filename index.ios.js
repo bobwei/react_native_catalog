@@ -9,7 +9,7 @@ import {
 import { Provider } from 'react-redux';
 
 import configureStore from './src/stores/configureStore';
-import IndexPage from './src/containers/IndexPage';
+import MapviewPage from './src/containers/MapviewPage';
 
 const store = configureStore();
 
@@ -24,7 +24,7 @@ class ReactNativeCatalog extends React.Component {
           itemWrapperStyle={styles.itemWrapperStyle}
           initialRoute={{
             title: 'Hello World',
-            component: IndexPage
+            component: MapviewPage
           }}
         />
       </Provider>

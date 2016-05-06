@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 
 import { GEOLOCATION_OPTIONS } from '../data';
-import { styles } from '../styles/IndexPage';
+import { styles } from '../styles/MapviewPage';
 
 
-export default class IndexPage extends React.Component {
+export default class MapviewPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
