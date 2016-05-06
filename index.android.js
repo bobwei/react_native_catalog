@@ -1,51 +1,46 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
+'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
-  View
+  Navigator
 } from 'react-native';
+import { Provider } from 'react-redux';
 
-class react_native_catalog extends Component {
+import configureStore from './src/stores/configureStore';
+import MapviewPageAndroid from './src/containers/MapviewPageAndroid';
+
+const store = configureStore();
+
+
+class ReactNativeCatalog extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <Provider store={store}>
+        <Navigator
+          style={styles.container}
+          itemWrapperStyle={styles.itemWrapperStyle}
+          initialRoute={{
+            title: 'Hello World',
+            index: 0
+          }}
+          renderScene={(route) => {
+            if (route.index === 0) {
+              return <MapviewPageAndroid />;
+            }
+          }}
+        />
+      </Provider>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    flex: 1
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  itemWrapperStyle: {}
 });
 
-AppRegistry.registerComponent('react_native_catalog', () => react_native_catalog);
+AppRegistry.registerComponent('react_native_catalog', () => ReactNativeCatalog);
