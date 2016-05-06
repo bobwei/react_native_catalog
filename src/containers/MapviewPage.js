@@ -5,8 +5,10 @@ import {
   View,
   MapView,
   TouchableOpacity,
-  Text
+  Text,
+  DeviceEventEmitter
 } from 'react-native';
+import RNLocation from 'react-native-location';
 
 import { GEOLOCATION_OPTIONS } from '../data';
 import { styles } from '../styles/MapviewPage';
@@ -31,21 +33,15 @@ export default class MapviewPage extends React.Component {
   }
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        let { coords: { latitude, longitude } } = position;
+    RNLocation.requestAlwaysAuthorization();
+    RNLocation.setDistanceFilter(1);
+    var subscription = DeviceEventEmitter.addListener(
+      'locationUpdated',
+      (location) => {
+        console.log(location);
+        let { coords: { latitude, longitude } } = location;
         this.addCoordinateToOverlay({ latitude, longitude });
-      },
-      (error) => console.log(error),
-      GEOLOCATION_OPTIONS
-    );
-    this.watchID = navigator.geolocation.watchPosition(
-      (position) => {
-        let { coords: { latitude, longitude } } = position;
-        this.addCoordinateToOverlay({ latitude, longitude });
-      },
-      (error) => console.log(error),
-      GEOLOCATION_OPTIONS
+      }
     );
   }
 
@@ -55,14 +51,21 @@ export default class MapviewPage extends React.Component {
 
   onToggleRecordingLocation() {
     this.setState({ isRecordingLocation: !this.state.isRecordingLocation });
+    if (this.state.isRecordingLocation) {
+      RNLocation.startUpdatingLocation();
+    } else {
+      RNLocation.stopUpdatingLocation();
+    }
   }
 
+  /*
   onRegionChange(region) {
     if (this.state.isRecordingLocation) {
       let { latitude, longitude } = region;
       this.addCoordinateToOverlay({ latitude, longitude });
     }
   }
+  */
 
   render() {
     return (
