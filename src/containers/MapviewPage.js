@@ -74,6 +74,7 @@ export default class MapviewPage extends React.Component {
           style={{ flex: 1 }}
           // onRegionChange={this.onRegionChange.bind(this)}
           showsUserLocation={true}
+          followUserLocation={true}
           region={{
             ...{
               latitude: 0,
